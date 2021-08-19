@@ -69,6 +69,10 @@ public class Field {
 	public boolean isMarked() {
 		return marked;
 	}
+
+	void setOpened(boolean open) {
+		this.open = open;				
+	}
 	
 	public boolean isOpened() {
 		return open;

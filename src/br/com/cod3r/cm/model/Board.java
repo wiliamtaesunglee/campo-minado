@@ -1,5 +1,7 @@
 package br.com.cod3r.cm.model;
 
+import br.com.cod3r.cm.exception.ExplosionException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -52,6 +54,25 @@ public class Board {
 	public void reset() {
 		fields.stream().forEach(c -> c.reset());
 		sortBombs();
+	}
+
+	public void openField(int line, int column) {
+		try {
+			fields.parallelStream()
+					.filter(c -> c.getLine() == line && c.getColumn() == column)
+					.findFirst()
+					.ifPresent(c -> c.performOpening());
+		} catch (ExplosionException e) {
+			fields.forEach(c -> c.setOpened(true));
+			throw e;
+		}
+	}
+
+	public void toogleMarketion(int line, int column) {
+		fields.parallelStream()
+				.filter(c -> c.getLine() == line && c.getColumn() == column)
+				.findFirst()
+				.ifPresent(c -> c.toogleMarkation());
 	}
 	
 	public String toString() {
